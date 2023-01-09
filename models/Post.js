@@ -13,7 +13,6 @@ const PostSchema = new mongoose.Schema(
         },
         tags: {
             type: Array,
-           // default: [],
         },
         viewsCount: {
             type: Number,
@@ -23,6 +22,9 @@ const PostSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: 'User',
             required: true,
+        },
+        comments:{
+            type:Array,
         },
         imageUrl: String,
     },

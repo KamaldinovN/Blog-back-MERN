@@ -10,7 +10,7 @@ import { handleValidationErrors, checkAuth } from './utils/index.js';
 
 import { UserController, PostController } from './Controlers/index.js';
 
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 4000
 const app = express()
 
 
@@ -66,7 +66,10 @@ app.get('/posts/new', PostController.getNewPosts);
 app.get('/posts/popular', PostController.getPopularPost);
 app.get('/posts/tags', PostController.getLastTags);
 app.get('/posts/:id', PostController.getOne);
+app.get('/tags/:id',PostController.getPostByTag)
 app.post('/posts', checkAuth, postCreateValidation, handleValidationErrors, PostController.create);
 app.delete('/posts/:id', checkAuth, PostController.remove);
+app.delete('/comments/:id',checkAuth, PostController.deleteComment)
 app.patch('/posts/:id', checkAuth, postCreateValidation, handleValidationErrors, PostController.update,
+app.patch('/comments/:id',handleValidationErrors, PostController.addComment)
 );

@@ -23,6 +23,17 @@ export const getPopularPost = async (req,res) => {
         })
     }
 }
+export const getPostByTag = async (req,res) => {
+    try {
+        const posts = await PostModel.find({tags: req.params.id}).populate('user')
+        res.json(posts)
+    } catch (err) {
+        console.log(err)
+        res.status(500).json({
+            message: "Cannot get post by tag"
+        })
+    }
+}
 export const getLastTags = async (req, res) => {
     try {
         const posts = await PostModel.find().limit(5).exec();
@@ -175,3 +186,52 @@ export const update = async (req, res) => {
         });
     }
 };
+
+
+
+export const addComment = async (req, res) => {
+    try {
+        const postId = req.params.id;
+        await PostModel.updateOne(
+            {
+                _id: postId,
+            },
+            {
+                "$push": {comments : req.body}
+            },
+        );
+
+        res.json({
+            success: true,
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Cannot add comment to post',
+        });
+    }
+};
+
+export const deleteComment = async (req, res) => {
+    try {
+        const postId = req.params.id;
+        await PostModel.updateOne(
+            {
+                _id: postId,
+            },
+            {
+                $pull:{comments: {commentId :req.body._id} }
+            },
+        );
+
+        res.json({
+            success: true,
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({
+            message: 'Cannot delete comment from post',
+        });
+    }
+};
+
